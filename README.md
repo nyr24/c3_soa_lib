@@ -1,11 +1,34 @@
-### Simple library for operating on SOA (Structure Of Arrays) in C3 programming language
-
-### See src/examples/example.c3 for more info
+## Simple library for operating on SOA (Structure Of Arrays) in C3 programming language
 
 ### Examples:
-`
-	/* First example */
+	import std::io;
+	import std::collections::elastic_array;
+	import std::collections::list;
+	import soa;
+	
+	struct MySoa @generic(CAP)
+	{
+		ElasticArray{int, CAP}    ints;
+		ElasticArray{float, CAP}  floats;
+		ElasticArray{String, CAP} strs;
+	}
+	
+	struct MyDynSoa
+	{
+		List{int}    ints;
+		List{float}  floats;
+		List{String} strs;
+	}
+	
+	struct SoaVal {
+		int int_val;
+		float f_val;
+		String str_val;
+	}
 
+	...
+
+	/* First example */
 	const MEM_LEN = 3;
 	{
 		MySoa{10} my_soa;
@@ -99,4 +122,3 @@
 
 		io::printfn("get_val is: %d, %.2f, %s", get_val.int_val, get_val.f_val, get_val.str_val); // output: get_val: 228, 1337.00, world 
 	}
-`

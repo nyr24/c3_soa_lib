@@ -91,7 +91,6 @@ fn int main(String[] args) {
 		io::printfn("get_val is: %d, %.2f, %s", get_val.int_val, get_val.f_val, get_val.str_val); // output: get_val: 228, 1337.00, world 
 	}
 
-
 	/* Third example */
 
 	{

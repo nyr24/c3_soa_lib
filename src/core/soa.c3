@@ -2,102 +2,102 @@ module soa;
 
 import std::io;
 
-macro @soa_push(#soa, #val)
+macro @push(#soa, #val)
 {
-	@soa_op_val(#soa, "push", #val);
+	@op_val(#soa, "push", #val);
 }
 
-macro @soa_push_all(#soa, #vals)
+macro @push_all(#soa, #vals)
 {
-	@soa_op_val(#soa, "push_all", #vals);
+	@op_val(#soa, "push_all", #vals);
 }
 
-macro @soa_push_front(#soa, #val)
+macro @push_front(#soa, #val)
 {
-	@soa_op_val(#soa, "push_front", #val);
+	@op_val(#soa, "push_front", #val);
 }
 
-macro @soa_push_try(#soa, #val)
+macro @push_try(#soa, #val)
 {
-	@soa_op_val(#soa, "push_try", #val, true)!;
+	@op_val(#soa, "push_try", #val, true)!;
 }
 
-macro @soa_push_front_try(#soa, #val)
+macro @push_front_try(#soa, #val)
 {
-	@soa_op_val(#soa, "push_front_try", #val, true)!;
+	@op_val(#soa, "push_front_try", #val, true)!;
 }
 
-macro @soa_pop(#soa)
+macro @pop(#soa)
 {
-	@soa_op(#soa, "pop", true)!;
+	@op(#soa, "pop", true)!;
 }
 
-macro @soa_pop_first(#soa)
+macro @pop_first(#soa)
 {
-	@soa_op(#soa, "pop_first", true)!;
+	@op(#soa, "pop_first", true)!;
 }
 
-macro @soa_insert_at(#soa, #ind, #val)
+macro @insert_at(#soa, #ind, #val)
 {
-	@soa_op_index_val(#soa, "insert_at", #ind, #val);
+	@op_index_val(#soa, "insert_at", #ind, #val);
 }
 
-macro @soa_insert_at_try(#soa, #ind, #val)
+macro @insert_at_try(#soa, #ind, #val)
 {
-	@soa_op_index_val(#soa, "insert_at_try", #ind, #val, true)!;
+	@op_index_val(#soa, "insert_at_try", #ind, #val, true)!;
 }
 
-macro @soa_fill(#soa, #val)
+macro @fill(#soa, #val)
 {
-	@soa_op_val(#soa, "fill", #val);
+	@op_val(#soa, "fill", #val);
 }
 
-macro @soa_set_at(#soa, #ind, #val)
+macro @set_at(#soa, #ind, #val)
 {
-	@soa_op_index_val(#soa, "set_at", #ind, #val);
+	@op_index_val(#soa, "set_at", #ind, #val);
 }
 
-macro @soa_remove_at(#soa, #ind)
+macro @remove_at(#soa, #ind)
 {
-	@soa_op_val(#soa, "remove_at", #ind);
+	@op_val(#soa, "remove_at", #ind);
 }
 
-macro @soa_remove_last(#soa)
+macro @remove_last(#soa)
 {
-	@soa_op(#soa, "remove_last", true)!;
+	@op(#soa, "remove_last", true)!;
 }
 
-macro @soa_remove_first(#soa)
+macro @remove_first(#soa)
 {
-	@soa_op(#soa, "remove_first", true)!;
+	@op(#soa, "remove_first", true)!;
 }
 
-macro @soa_set_size(#soa, #size)
+macro @set_size(#soa, #size)
 {
-	@soa_op_val(#soa, "set_size", #size);
+	@op_val(#soa, "set_size", #size);
 }
 
-macro @soa_ensure_capacity(#soa, #cap)
+macro @ensure_capacity(#soa, #cap)
 {
-	@soa_op_val(#soa, "ensure_capacity", #cap);
+	@op_val(#soa, "ensure_capacity", #cap);
 }
 
-macro @soa_clear(#soa)
+macro @clear(#soa)
 {
-	@soa_op(#soa, "clear");
+	@op(#soa, "clear");
 }
 
-macro @soa_free(#soa)
+macro @free(#soa)
 {
-	@soa_op(#soa, "free");
+	@op(#soa, "free");
 }
 
-macro @soa_reverse(#soa)
+macro @reverse(#soa)
 {
-	@soa_op(#soa, "reverse");
+	@op(#soa, "reverse");
 }
 
-macro @soa_init(#soa, #alloc, uint #cap = 16u)
+macro @init(#soa, #alloc, uint #cap = 16u)
 {
 	var $SoaType = $typeof(#soa);
 	var $soa_members = $SoaType.membersof;
@@ -107,17 +107,17 @@ macro @soa_init(#soa, #alloc, uint #cap = 16u)
 	$endforeach
 }
 
-macro @soa_tinit(#soa, uint #cap = 16u)
+macro @tinit(#soa, uint #cap = 16u)
 {
-	@soa_op_val(#soa, "tinit", #cap);
+	@op_val(#soa, "tinit", #cap);
 }
 
-macro @soa_reserve(#soa, uint #cap)
+macro @reserve(#soa, uint #cap)
 {
-	@soa_op_val(#soa, "reserve", #cap);
+	@op_val(#soa, "reserve", #cap);
 }
 
-macro @soa_print(#soa)
+macro @print(#soa)
 {
 	var $SoaType = $typeof(#soa);
 	var $soa_members = $SoaType.membersof;
@@ -127,7 +127,7 @@ macro @soa_print(#soa)
 	$endforeach
 }
 
-macro @soa_swap(#soa, usz #first, usz #second)
+macro @swap(#soa, usz #first, usz #second)
 {
 	var $SoaType = $typeof(#soa);
 	var $soa_members = $SoaType.membersof;
@@ -137,26 +137,26 @@ macro @soa_swap(#soa, usz #first, usz #second)
 	$endforeach
 }
 
-macro @soa_first(#soa, #out)
+macro @first(#soa, #out)
 {
-	@soa_at(#soa, "first", 0, #out)!;
+	@at(#soa, "first", 0, #out)!;
 }
 
-macro @soa_last(#soa, #out)
+macro @last(#soa, #out)
 {
-	@soa_at(#soa, "last", 0, #out)!;
+	@at(#soa, "last", 0, #out)!;
 }
 
-macro @soa_get(#soa, uint #ind, #out)
+macro @get(#soa, uint #ind, #out)
 {
-	@soa_at(#soa, "get", #ind, #out);
+	@at(#soa, "get", #ind, #out);
 }
 
 <*
 	@require $op == "first" || $op == "last" || $op == "get"
 	@require #out != null
 *>
-macro @soa_at(#soa, String $op, uint #ind, #out) @private
+macro @at(#soa, String $op, uint #ind, #out) @private
 {
 	var $SoaType = $typeof(#soa);
 	var $OutType = $typeof(#out);
@@ -179,20 +179,20 @@ macro @soa_at(#soa, String $op, uint #ind, #out) @private
 	$endfor
 }
 
-macro usz? @soa_index_of(#soa, #val)
+macro usz? @index_of(#soa, #val)
 {
-	return @soa_index_of_inner(#soa, "index_of", #val);
+	return @index_of_inner(#soa, "index_of", #val);
 }
 
-macro usz? @soa_rindex_of(#soa, #val)
+macro usz? @rindex_of(#soa, #val)
 {
-	return @soa_index_of_inner(#soa, "rindex_of", #val);
+	return @index_of_inner(#soa, "rindex_of", #val);
 }
 
 <*
 	@require $op == "index_of" || $op =="rindex_of"
 *>
-macro usz? @soa_index_of_inner(#soa, String $op, #val) @private
+macro usz? @index_of_inner(#soa, String $op, #val) @private
 {
 	var $SoaType = $typeof(#soa);
 	var $ValType = $typeof(#val);
@@ -220,7 +220,7 @@ macro usz? @soa_index_of_inner(#soa, String $op, #val) @private
 	Add as many values from this array as possible, returning the
 	number of elements that didn't fit.
 *>
-macro usz @soa_push_all_to_limit(#soa, #vals)
+macro usz @push_all_to_limit(#soa, #vals)
 {
 	var $SoaType = $typeof(#soa);
 	var $ValType = $typeof(#vals);
@@ -248,7 +248,7 @@ macro usz @soa_push_all_to_limit(#soa, #vals)
 	return didnt_fit_cnt;
 }
 
-macro @soa_array_view(#soa, #i)
+macro @array_view(#soa, #i)
 {
 	var $SoaType = $typeof(#soa);
 	var $soa_members = $SoaType.membersof;
@@ -256,7 +256,7 @@ macro @soa_array_view(#soa, #i)
 	return #soa.$eval($soa_members[#i].nameof).array_view();
 }
 
-macro bool @soa_contains(#soa, #val)
+macro bool @contains(#soa, #val)
 {
 	var $SoaType = $typeof(#soa);
 	var $ValType = $typeof(#val);
@@ -278,7 +278,7 @@ macro bool @soa_contains(#soa, #val)
 <*
 	@return "the number of deleted elements."
 *>
-macro usz @soa_remove_item(#soa, #val)
+macro usz @remove_item(#soa, #val)
 {
 	var $SoaType = $typeof(#soa);
 	var $ValType = $typeof(#val);
@@ -295,20 +295,20 @@ macro usz @soa_remove_item(#soa, #val)
 	return remove_res[0];
 }
 
-macro bool @soa_remove_last_item(#soa, #val)
+macro bool @remove_last_item(#soa, #val)
 {
-	return @soa_remove_item_inner(#soa, "remove_last_item", #val);
+	return @remove_item_inner(#soa, "remove_last_item", #val);
 }
 
-macro bool @soa_remove_first_item(#soa, #val)
+macro bool @remove_first_item(#soa, #val)
 {
-	return @soa_remove_item_inner(#soa, "remove_first_item", #val);
+	return @remove_item_inner(#soa, "remove_first_item", #val);
 }
 
 <*
 	@require $op =="remove_first_item" || $op == "remove_last_item"
 *>
-macro bool @soa_remove_item_inner(#soa, String $op, #val) @private
+macro bool @remove_item_inner(#soa, String $op, #val) @private
 {
 	var $SoaType = $typeof(#soa);
 	var $ValType = $typeof(#val);
@@ -335,25 +335,25 @@ macro bool @soa_remove_item_inner(#soa, String $op, #val) @private
 	Requires a list of pointers
 	@return "The number non-null values in the list"
 *>
-macro @soa_compact_count(#soa, #out_res)
+macro @compact_count(#soa, #out_res)
 {
-	@soa_compact_inner(#soa, "compact_count", #out_res);
+	@compact_inner(#soa, "compact_count", #out_res);
 }
 
 <*
 	Requires a list of pointers
 	@return "the number of deleted null elements."
 *>
-macro @soa_compact(#soa, #out_res)
+macro @compact(#soa, #out_res)
 {
-	@soa_compact_inner(#soa, "compact", #out_res);
+	@compact_inner(#soa, "compact", #out_res);
 }
 
 <*
 	@require $op == "compact" || $op == "compact_count"
 	@require $typeof(#out_res).kindof == TypeKind.SLICE
 *>
-macro void @soa_compact_inner(#soa, String $op, #out_res) @private
+macro void @compact_inner(#soa, String $op, #out_res) @private
 {
 	var $SoaType = $typeof(#soa);
 	var $soa_members = $SoaType.membersof;
@@ -373,7 +373,7 @@ macro void @soa_compact_inner(#soa, String $op, #out_res) @private
 	@require $typeof(#out_res).kindof == TypeKind.SLICE
 	@require $typeof(#out_res).inner.kindof == TypeKind.BOOL
 *>
-macro @soa_equals(#soa, #with, #out_res)
+macro @equals(#soa, #with, #out_res)
 {
 	var $SoaType = $typeof(#soa);
 	var $WithType = $typeof(#with);
@@ -390,7 +390,7 @@ macro @soa_equals(#soa, #with, #out_res)
 /* Generic API */
 
 // e.g. clear(), reverse()
-macro @soa_op(#soa, String $op, bool $is_opt = false)
+macro @op(#soa, String $op, bool $is_opt = false)
 {
 	var $SoaType = $typeof(#soa);
 	var $soa_members = $SoaType.membersof;
@@ -405,7 +405,7 @@ macro @soa_op(#soa, String $op, bool $is_opt = false)
 }
 
 // e.g. push(), push_front(), set_size(), resize(), remove_at()
-macro @soa_op_val(#soa, String $op, #val, bool $is_opt = false)
+macro @op_val(#soa, String $op, #val, bool $is_opt = false)
 {
 	var $SoaType = $typeof(#soa);
 	var $ValType = $typeof(#val);
@@ -463,7 +463,7 @@ macro @soa_op_val(#soa, String $op, #val, bool $is_opt = false)
 }
 
 // e.g. insert_at(), set_at(), insert_at_try()
-macro @soa_op_index_val(#soa, String $op, #index, #val, bool $is_opt = false)
+macro @op_index_val(#soa, String $op, #index, #val, bool $is_opt = false)
 {
 	var $SoaType = $typeof(#soa);
 	var $ValType = $typeof(#val);

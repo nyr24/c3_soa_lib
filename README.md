@@ -11,34 +11,35 @@
 - just include `src/core/soa.c3` file directly into your project, other files are completely optional
 
 ## Code Examples:
-	import std::io;
-	import std::collections::elastic_array;
-	import std::collections::list;
-	import soa;
-	
-	struct MySoa @generic(CAP)
-	{
-		ElasticArray{int, CAP}    ints;
-		ElasticArray{float, CAP}  floats;
-		ElasticArray{String, CAP} strs;
-	}
-	
-	struct MyDynSoa
-	{
-		List{int}    ints;
-		List{float}  floats;
-		List{String} strs;
-	}
-	
-	struct SoaVal
-	{
-		int 	int_val;
-		float 	f_val;
-		String 	str_val;
-	}
+```cpp
+import std::io;
+import std::collections::elastic_array;
+import std::collections::list;
+import soa;
 
-	...
+struct MySoa @generic(CAP)
+{
+	ElasticArray{int, CAP}    ints;
+	ElasticArray{float, CAP}  floats;
+	ElasticArray{String, CAP} strs;
+}
 
+struct MyDynSoa
+{
+	List{int}    ints;
+	List{float}  floats;
+	List{String} strs;
+}
+
+struct SoaVal
+{
+	int 	int_val;
+	float 	f_val;
+	String 	str_val;
+}
+
+fn void example()
+{
 	/* First example */
 	const MEM_LEN = 3;
 	{
@@ -133,3 +134,5 @@
 
 		io::printfn("get_val is: %d, %.2f, %s", get_val.int_val, get_val.f_val, get_val.str_val); // output: get_val: 228, 1337.00, world 
 	}
+}
+```

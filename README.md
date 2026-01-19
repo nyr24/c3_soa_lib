@@ -10,7 +10,7 @@
 ## Usage:
 - just include `src/core/soa.c3` file directly into your project, other files are completely optional
 
-## Code Examples:
+## Code Example:
 ```cpp
 import std::io;
 import std::collections::elastic_array;
@@ -53,7 +53,11 @@ fn int main() {
 	/* First example */
 
 	const MEM_LEN = 3;
-	{
+	const FIRST_EXAMPLE = true;
+	const SEC_EXAMPLE = true;
+	const THIRD_EXAMPLE = true;
+	
+	if (FIRST_EXAMPLE) {
 		MySoa{10} my_soa;
 		MySoa{10} my_soa2;
 
@@ -65,21 +69,41 @@ fn int main() {
 
 		soa::@push_all(my_soa, soa_val_slice);
 
+		int[] ints_view = soa::@array_view_key(my_soa, "ints");
+		float[] floats_view = soa::@array_view_key(my_soa, "floats");
+		String[] strs_view = soa::@array_view_key(my_soa, "strs");
+
+		ints_view = soa::@array_view_ind(my_soa, 0);
+		floats_view = soa::@array_view_ind(my_soa, 1);
+		strs_view = soa::@array_view_ind(my_soa, 2);
+
+		ints_view = soa::@array_view_ind_partial(my_soa, 0, 0, 1);
+		floats_view = soa::@array_view_ind_partial(my_soa, 1, 2, 3);
+		strs_view = soa::@array_view_ind_partial(my_soa, 2, 4, 5);
+
+		ints_view = soa::@array_view_key_partial(my_soa, "ints", 0, 1);
+		floats_view = soa::@array_view_key_partial(my_soa, "floats", 2, 3);
+		strs_view = soa::@array_view_key_partial(my_soa, "strs", 4, 5);
+
+		// io::printn(ints_view);
+		// io::printn(floats_view);
+		// io::printn(strs_view);
+		
 		MySoaView soa_view;
 		soa::@soa_view(my_soa, soa_view);
 
 		MySoaView soa_view_partial;
 		soa::@soa_view_partial(my_soa, soa_view_partial, 0, 2);
 
-		soa::@print(soa_view);
-		soa::@print(soa_view_partial);
+		// soa::@print(soa_view);
+		// soa::@print(soa_view_partial);
 		
 		usz not_entered_cnt = soa::@push_all_to_limit(my_soa2, soa_val_slice);
-		io::printfn("not entered count: %d", not_entered_cnt);
+		// io::printfn("not entered count: %d", not_entered_cnt);
 
 		bool[MEM_LEN] eq_res;
 		soa::@equals(my_soa, my_soa2, eq_res[0:eq_res.len]);
-		io::printfn("res: %s", eq_res);
+		// io::printfn("res: %s", eq_res);
 
 		soa::@remove_at(my_soa, 1);
 		soa::@pop(my_soa)!!;
@@ -89,12 +113,12 @@ fn int main() {
 		soa::@remove_last(my_soa)!!;
 		soa::@remove_first(my_soa)!!;
 		soa::@reverse(my_soa);
-		soa::@print(my_soa);
+		// soa::@print(my_soa);
 	}
 
 	/* Second example */
 
-	{
+	if (SEC_EXAMPLE) {
 		MySoa{100} my_soa;
 		Value soa_val = { 13, 0.5f, "hello!" };
 
@@ -116,20 +140,19 @@ fn int main() {
 		Value get_val @noinit;
 		soa::@get(my_soa, 3, &get_val);
 
-		soa::@print(my_soa);
-
-		io::printfn("get_val is: %d, %.2f, %s", get_val.int_val, get_val.f_val, get_val.str_val); // output: get_val: 228, 1337.00, world 
+		// soa::@print(my_soa);
+		// io::printfn("get_val is: %d, %.2f, %s", get_val.int_val, get_val.f_val, get_val.str_val); // output: get_val: 228, 1337.00, world 
 	}
 
 	/* Third example */
 
-	{
+	if (THIRD_EXAMPLE) {
 		MyDynSoa my_soa;
 		Value soa_val = { 13, 0.5f, "hello!" };
 
 		soa::@init(my_soa, tmem, 100u);
 		defer {
-			io::printn("\n\tdeferring free");
+			// io::printn("\n\tdeferring free");
 			soa::@free(my_soa);
 		}
 
@@ -151,9 +174,8 @@ fn int main() {
 		Value get_val @noinit;
 		soa::@get(my_soa, 3, &get_val);
 
-		soa::@print(my_soa);
-
-		io::printfn("get_val is: %d, %.2f, %s", get_val.int_val, get_val.f_val, get_val.str_val); // output: get_val: 228, 1337.00, world 
+		// soa::@print(my_soa);
+		// io::printfn("get_val is: %d, %.2f, %s", get_val.int_val, get_val.f_val, get_val.str_val); // output: get_val: 228, 1337.00, world 
 	}
 
 	return 0;

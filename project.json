@@ -8,9 +8,9 @@
   // Libraries to use for all targets.
   "dependencies": [],
   // Authors, optionally with email.
-  "authors": [ "Nyr24" ],
+  "authors": [ "nyr24" ],
   // Version using semantic versioning.
-  "version": "0.9.0",
+  "version": "0.9.1",
   // Sources compiled for all targets.
   "sources": [ "src/**" ],
   // Test sources compiled for all targets.

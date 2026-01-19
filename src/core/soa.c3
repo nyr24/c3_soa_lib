@@ -248,50 +248,6 @@ macro usz @push_all_to_limit(#soa, #vals)
 	return didnt_fit_cnt;
 }
 
-macro @array_view_key(#soa, String $key)
-{
-	var $SoaType = $typeof(#soa);
-	var $soa_members = $SoaType.membersof;
-	return #soa.$eval($key).array_view();
-}
-
-macro @array_view_ind(#soa, #i)
-{
-	var $SoaType = $typeof(#soa);
-	var $soa_members = $SoaType.membersof;
-	assert(#i >= 0 && #i < $soa_members.len, "Out of bounds");
-	return #soa.$eval($soa_members[#i].nameof).array_view();
-}
-
-<*
-	@require #start_ind >= 0
-	@require #end_ind > 0
-	@require #start_ind < #end_ind
-*>
-macro @array_view_key_partial(#soa, String $key, usz #start_ind, usz #end_ind)
-{
-	var $SoaType = $typeof(#soa);
-	var $soa_members = $SoaType.membersof;
-	assert(#start_ind < #soa.$eval($soa_members[0].nameof).size, "Start index should be at most = size - 1");
-	assert(#end_ind <= #soa.$eval($soa_members[0].nameof).size, "End index would be out of bounds");
-	return #soa.$eval($key).entries[#start_ind..#end_ind];
-}
-
-<*
-	@require #start_ind >= 0
-	@require #end_ind > 0
-	@require #start_ind < #end_ind
-*>
-macro @array_view_ind_partial(#soa, #i, usz #start_ind, usz #end_ind)
-{
-	var $SoaType = $typeof(#soa);
-	var $soa_members = $SoaType.membersof;
-	assert(#i >= 0 && #i < $soa_members.len, "Out of bounds");
-	assert(#start_ind < #soa.$eval($soa_members[0].nameof).size, "Start index should be at most = size - 1");
-	assert(#end_ind <= #soa.$eval($soa_members[0].nameof).size, "End index would be out of bounds");
-	return #soa.$eval($soa_members[#i].nameof).entries[#start_ind..#end_ind];
-}
-
 macro @soa_view(#soa, #out_view)
 {
 	var $SoaType = $typeof(#soa);

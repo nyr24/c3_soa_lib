@@ -69,26 +69,6 @@ fn int main() {
 
 		soa::@push_all(my_soa, soa_val_slice);
 
-		int[] ints_view = soa::@array_view_key(my_soa, "ints");
-		float[] floats_view = soa::@array_view_key(my_soa, "floats");
-		String[] strs_view = soa::@array_view_key(my_soa, "strs");
-
-		ints_view = soa::@array_view_ind(my_soa, 0);
-		floats_view = soa::@array_view_ind(my_soa, 1);
-		strs_view = soa::@array_view_ind(my_soa, 2);
-
-		ints_view = soa::@array_view_ind_partial(my_soa, 0, 0, 1);
-		floats_view = soa::@array_view_ind_partial(my_soa, 1, 2, 3);
-		strs_view = soa::@array_view_ind_partial(my_soa, 2, 4, 5);
-
-		ints_view = soa::@array_view_key_partial(my_soa, "ints", 0, 1);
-		floats_view = soa::@array_view_key_partial(my_soa, "floats", 2, 3);
-		strs_view = soa::@array_view_key_partial(my_soa, "strs", 4, 5);
-
-		// io::printn(ints_view);
-		// io::printn(floats_view);
-		// io::printn(strs_view);
-		
 		MySoaView soa_view;
 		soa::@soa_view(my_soa, soa_view);
 

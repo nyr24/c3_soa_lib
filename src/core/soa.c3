@@ -256,6 +256,38 @@ macro @array_view(#soa, #i)
 	return #soa.$eval($soa_members[#i].nameof).array_view();
 }
 
+macro @soa_view(#soa, #out_view)
+{
+	var $SoaType = $typeof(#soa);
+	var $OutType = $typeof(#out_view);
+	var $soa_members = $SoaType.membersof;
+	var $out_members = $OutType.membersof;
+
+	$for var $i = 0; $i < $soa_members.len; ++$i:
+		#out_view.$eval($out_members[$i].nameof) = #soa.$eval($soa_members[$i].nameof).array_view();
+	$endfor
+}
+
+<*
+	@require #start_ind >= 0
+	@require #end_ind > 0
+	@require #start_ind < #end_ind
+*>
+macro @soa_view_partial(#soa, #out_view, usz #start_ind, usz #end_ind)
+{
+	var $SoaType = $typeof(#soa);
+	var $OutType = $typeof(#out_view);
+	var $soa_members = $SoaType.membersof;
+	var $out_members = $OutType.membersof;
+
+	assert(#start_ind < #soa.$eval($soa_members[0].nameof).size, "Start index should be at most = size - 1");
+	assert(#end_ind <= #soa.$eval($soa_members[0].nameof).size, "End index would be out of bounds");
+
+	$for var $i = 0; $i < $soa_members.len; ++$i:
+		#out_view.$eval($out_members[$i].nameof) = #soa.$eval($soa_members[$i].nameof).entries[#start_ind:#end_ind];
+	$endfor
+}
+
 macro bool @contains(#soa, #val)
 {
 	var $SoaType = $typeof(#soa);

@@ -10,47 +10,69 @@
 - just include `src/core/soa.c3` file directly into your project, other files are completely optional
 
 ## Code Examples:
-	import std::io;
-	import std::collections::elastic_array;
-	import std::collections::list;
-	import soa;
-	
-	struct MySoa @generic(CAP)
-	{
-		ElasticArray{int, CAP}    ints;
-		ElasticArray{float, CAP}  floats;
-		ElasticArray{String, CAP} strs;
-	}
-	
-	struct MyDynSoa
-	{
-		List{int}    ints;
-		List{float}  floats;
-		List{String} strs;
-	}
-	
-	struct SoaVal
-	{
-		int 	int_val;
-		float 	f_val;
-		String 	str_val;
-	}
+```cpp
+import std::io;
+import std::collections::elastic_array;
+import std::collections::list;
+import soa;
 
-	...
+struct MySoa @generic(CAP)
+{
+	ElasticArray{int, CAP}    ints;
+	ElasticArray{float, CAP}  floats;
+	ElasticArray{String, CAP} strs;
+}
 
+struct MyDynSoa
+{
+	List{int}    ints;
+	List{float}  floats;
+	List{String} strs;
+}
+
+struct MySoaView
+{
+	int[]    ints;
+	float[]  floats;
+	String[] strs;
+}
+
+struct Value
+{
+	int    int_val;
+	float  f_val;
+	String str_val;
+}
+
+fn void Value.print(&self) {
+	io::printfn("i: %d, f: %.2f, s: %s", self.int_val, self.f_val, self.str_val);
+}
+
+fn int main() {
 	/* First example */
+
 	const MEM_LEN = 3;
 	{
 		MySoa{10} my_soa;
 		MySoa{10} my_soa2;
 
-		SoaVal soa_val = { 11, 0.1f, "first!" };
-		SoaVal soa_val2 = { 22, 0.2f, "sec!" };
-		SoaVal soa_val3 = { 33, 0.3f, "third!" };
+		Value soa_val = { 11, 0.1f, "first!" };
+		Value soa_val2 = { 22, 0.2f, "sec!" };
+		Value soa_val3 = { 33, 0.3f, "third!" };
 
-		SoaVal[] soa_val_slice = { soa_val, soa_val2, soa_val3, soa_val, soa_val2, soa_val3 };
+		Value[] soa_val_slice = { soa_val, soa_val2, soa_val3, soa_val, soa_val2, soa_val3 };
 
 		soa::@push_all(my_soa, soa_val_slice);
+
+		MySoaView soa_view;
+		soa::@soa_view(my_soa, soa_view);
+
+		MySoaView soa_view_partial;
+		soa::@soa_view_partial(my_soa, soa_view_partial, 0, 2);
+
+		soa::@print(soa_view);
+		soa::@print(soa_view_partial);
+		
 		usz not_entered_cnt = soa::@push_all_to_limit(my_soa2, soa_val_slice);
 		io::printfn("not entered count: %d", not_entered_cnt);
 
@@ -73,7 +95,7 @@
 
 	{
 		MySoa{100} my_soa;
-		SoaVal soa_val = { 13, 0.5f, "hello!" };
+		Value soa_val = { 13, 0.5f, "hello!" };
 
 		soa::@set_size(my_soa, 10);
 	
@@ -88,9 +110,9 @@
 		soa::@push(my_soa, soa_val);
 		soa::@reverse(my_soa);
 
-		SoaVal set_val = { 228, 1337, "world" };
+		Value set_val = { 228, 1337, "world" };
 		soa::@set_at(my_soa, 3, set_val);
-		SoaVal get_val @noinit;
+		Value get_val @noinit;
 		soa::@get(my_soa, 3, &get_val);
 
 		soa::@print(my_soa);
@@ -98,11 +120,11 @@
 		io::printfn("get_val is: %d, %.2f, %s", get_val.int_val, get_val.f_val, get_val.str_val); // output: get_val: 228, 1337.00, world 
 	}
 
-	/* Third example (Dynamic array - List) */
+	/* Third example */
 
 	{
 		MyDynSoa my_soa;
-		SoaVal soa_val = { 13, 0.5f, "hello!" };
+		Value soa_val = { 13, 0.5f, "hello!" };
 
 		soa::@init(my_soa, tmem, 100u);
 		defer {
@@ -123,12 +145,16 @@
 		soa::@push(my_soa, soa_val);
 		soa::@reverse(my_soa);
 
-		SoaVal set_val = { 228, 1337, "world" };
+		Value set_val = { 228, 1337, "world" };
 		soa::@set_at(my_soa, 3, set_val);
-		SoaVal get_val @noinit;
+		Value get_val @noinit;
 		soa::@get(my_soa, 3, &get_val);
 
 		soa::@print(my_soa);
 
 		io::printfn("get_val is: %d, %.2f, %s", get_val.int_val, get_val.f_val, get_val.str_val); // output: get_val: 228, 1337.00, world 
 	}
+
+	return 0;
+}
+```

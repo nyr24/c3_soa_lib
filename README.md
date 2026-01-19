@@ -1,10 +1,11 @@
 ## Simple library for operating on SOA (Structure Of Arrays) in C3 programming language
 - This library provides an interface for easier interaction with SOA data structures in your code, so it feels like you are interacting with AOS (Array Of Structures).
-- You don't need create your own wrappers over each newly created SOA structure to interact with it.
+- Uses the same naming conventions as in std containers (ElasticArray or List).
 - Creating the SOA types is your responsibility, it gives you more control over choosing a specific array container (maybe you would want to use either List (heap allocated) or ElasticArray (stack allocated) or maybe even your own custom Array implementation (in this case, if naming of your methods will differentiate with std containers you maybe will need to add some macros on top of existing ones).
 
 ## Why?
 - Structure of Arrays (SOA) should be used instead Array of Structures (AOS) for performance, especially in simulations or game engines, because SOA provides better CPU cache utilization and allows for efficient Single Instruction, Multiple Data (SIMD) vectorization by keeping related data types (like all x coordinates) contiguous in memory, leading to fewer cache misses and faster processing of large datasets, while AOS is simpler for object-oriented code but inefficient for field-specific operations 
+- You don't need create your own wrappers over each newly created SOA structure to interact with it.
 
 ## Usage:
 - just include `src/core/soa.c3` file directly into your project, other files are completely optional

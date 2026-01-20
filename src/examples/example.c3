@@ -55,8 +55,15 @@ fn int main() {
 
 		soa::@push_all(my_soa, soa_val_slice);
 
+		usz len = soa::@size(my_soa);
+		usz cap = soa::@cap(my_soa);
+		// io::printfn("Stack-allocated SOA: len: %d, cap: %d", len, cap);
+
 		MySoaView soa_view;
 		soa::@soa_view(my_soa, soa_view);
+
+		usz view_len = soa::@len(soa_view);
+		// io::printfn("View SOA: len: %d", view_len);
 
 		MySoaView soa_view_partial;
 		soa::@soa_view_partial(my_soa, soa_view_partial, 0, 2);
@@ -116,17 +123,22 @@ fn int main() {
 		MyDynSoa my_soa;
 		Value soa_val = { 13, 0.5f, "hello!" };
 
-		soa::@init(my_soa, tmem, 100u);
+		soa::@init(my_soa, tmem, 101u);
 		defer {
 			// io::printn("\n\tdeferring free");
 			soa::@free(my_soa);
 		}
 
-		soa::@set_size(my_soa, 10);
+		soa::@set_size(my_soa, 28);
 	
 		for (uint i = 0; i < 3; ++i) {
 			soa::@insert_at(my_soa, i, soa_val);
 		}
+
+		usz len = soa::@len(my_soa);
+		usz cap = soa::@cap(my_soa);
+		// io::printfn("Heap-allocated SOA: len: %d, cap: %d", len, cap);
+
 		soa::@pop(my_soa)!!;
 		soa::@clear(my_soa);
 		soa::@set_size(my_soa, 8);

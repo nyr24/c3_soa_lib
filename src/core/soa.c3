@@ -97,6 +97,40 @@ macro @reverse(#soa)
 	@op(#soa, "reverse");
 }
 
+macro @len(#soa)
+{
+	var $SoaType = $typeof(#soa);
+	var $soa_mem = $SoaType.membersof[0];
+	$if $soa_mem.kindof == TypeKind.SLICE:
+		return #soa.$eval($soa_mem.nameof).len;
+	$else
+		return #soa.$eval($soa_mem.nameof).size;
+	$endif
+}
+
+macro @size(#soa)
+	=> @len(#soa);
+
+macro usz @capacity(#soa)
+{
+	var $SoaType = $typeof(#soa);
+	var $soa_mem = $SoaType.membersof[0];
+
+	$switch:
+	$case $soa_mem.kindof == TypeKind.SLICE:
+		$assert(false);
+	// assume its heap-allocated array
+	$case has_field($soa_mem.typeid, "capacity"):
+		return #soa.$eval($soa_mem.nameof).capacity;
+	// assume its stack-allocated array
+	$case has_field($soa_mem.typeid, "entries"):
+		return #soa.$eval($soa_mem.nameof).entries.len;
+	$endswitch;
+}
+
+macro usz @cap(#soa)
+	=> @capacity(#soa);
+
 macro @init(#soa, #alloc, uint #cap = 16u)
 {
 	var $SoaType = $typeof(#soa);
@@ -512,6 +546,17 @@ macro has_method($Type, String $name) @const
 	var $methods = $Type.methodsof;
 	$foreach $m : $methods:
 		$if ($m == $name):
+			return true;
+		$endif
+	$endforeach
+	return false;
+}
+
+macro has_field($Type, String $name) @const
+{
+	var $members = $Type.membersof;
+	$foreach $m : $members:
+		$if ($m.nameof == $name):
 			return true;
 		$endif
 	$endforeach

@@ -9,6 +9,7 @@
 
 ## Usage:
 - just include `src/core/soa.c3` file directly into your project, other files are completely optional
+- currently build for C3 version = 0.7.9, llvm version 21.1.6
 
 ## Code Example:
 ```cpp
@@ -17,7 +18,7 @@ import std::collections::elastic_array;
 import std::collections::list;
 import soa;
 
-struct MySoa @generic(CAP)
+struct MySoa <CAP>
 {
 	ElasticArray{int, CAP}    ints;
 	ElasticArray{float, CAP}  floats;

@@ -1,4 +1,4 @@
-module std::collections::elastic_array{Type, MAX_SIZE};
+module std::collections::elastic_array<Type, MAX_SIZE>;
 
 <*
 	@require new_cap <= MAX_SIZE : "Would exceed maximum capacity"

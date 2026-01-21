@@ -244,7 +244,7 @@ macro usz? @index_of_inner(#soa, String $op, #val) @private
 
 	for (uint j = 1; j < $soa_members.len; ++j) {
 		if (indices[0] != indices[j]) {
-			return NOT_FOUND?;
+			return NOT_FOUND~;
 		}
 	}
 	return indices[0];

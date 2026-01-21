@@ -3,7 +3,7 @@ import std::collections::elastic_array;
 import std::collections::list;
 import soa;
 
-struct MySoa @generic(CAP)
+struct MySoa <CAP>
 {
 	ElasticArray{int, CAP}    ints;
 	ElasticArray{float, CAP}  floats;

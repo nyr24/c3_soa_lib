@@ -17,18 +17,24 @@ struct MyDynSoa
 	List{String} strs;
 }
 
-struct MySoaView
+struct MySoaViewHorizontal
 {
-	int[]    ints;
-	float[]  floats;
-	String[] strs;
+	int[]   	ints;
+	float[] 	floats;
+	String[]	strs;
+}
+
+struct MySoaViewVertical
+{
+	int[]  	 	ints;
+	String[] 	strs;
 }
 
 struct Value
 {
-	int    int_val;
-	float  f_val;
-	String str_val;
+	int    		int_val;
+	float  		f_val;
+	String 		str_val;
 }
 
 fn void Value.print(&self) {
@@ -59,17 +65,21 @@ fn int main() {
 		usz cap = soa::@cap(my_soa);
 		// io::printfn("Stack-allocated SOA: len: %d, cap: %d", len, cap);
 
-		MySoaView soa_view;
+		MySoaViewHorizontal soa_view;
 		soa::@soa_view(my_soa, soa_view);
 
 		usz view_len = soa::@len(soa_view);
 		// io::printfn("View SOA: len: %d", view_len);
 
-		MySoaView soa_view_partial;
-		soa::@soa_view_partial(my_soa, soa_view_partial, 0, 2);
+		MySoaViewHorizontal soa_view_partial_hor;
+		soa::@soa_view_partial_hor(my_soa, soa_view_partial_hor, 0, 2);
+
+		MySoaViewVertical soa_view_partial_vert;
+		soa::@soa_view_partial_vert(my_soa, soa_view_partial_vert, { 0, 2 });
 
 		// soa::@print(soa_view);
-		// soa::@print(soa_view_partial);
+		// soa::@print(soa_view_partial_hor);
+		// soa::@print(soa_view_partial_vert);
 		
 		usz not_entered_cnt = soa::@push_all_to_limit(my_soa2, soa_val_slice);
 		// io::printfn("not entered count: %d", not_entered_cnt);

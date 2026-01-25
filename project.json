@@ -10,7 +10,7 @@
   // Authors, optionally with email.
   "authors": [ "nyr24" ],
   // Version using semantic versioning.
-  "version": "0.9.3",
+  "version": "0.9.4",
   // Sources compiled for all targets.
   "sources": [ "src/**" ],
   // Test sources compiled for all targets.

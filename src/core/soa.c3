@@ -294,12 +294,14 @@ macro @soa_view(#soa, #out_view)
 	$endfor
 }
 
+// horizontal partial view:
+// slices all arrays from #start_ind to #end_ind
 <*
 	@require #start_ind >= 0
 	@require #end_ind > 0
 	@require #start_ind < #end_ind
 *>
-macro @soa_view_partial(#soa, #out_view, usz #start_ind, usz #end_ind)
+macro @soa_view_partial_hor(#soa, #out_view, usz #start_ind, usz #end_ind)
 {
 	var $SoaType = $typeof(#soa);
 	var $OutType = $typeof(#out_view);
@@ -312,6 +314,22 @@ macro @soa_view_partial(#soa, #out_view, usz #start_ind, usz #end_ind)
 	$for var $i = 0; $i < $soa_members.len; ++$i:
 		#out_view.$eval($out_members[$i].nameof) = #soa.$eval($soa_members[$i].nameof).entries[#start_ind..#end_ind];
 	$endfor
+}
+
+// vertical partial view:
+// creates views (slices) only for specified indices of fields in #field_indices
+macro @soa_view_partial_vert(#soa, #out_view, usz[] $field_indices)
+{
+	var $SoaType = $typeof(#soa);
+	var $OutType = $typeof(#out_view);
+	var $soa_members = $SoaType.membersof;
+	var $out_members = $OutType.membersof;
+
+	var $i = 0;
+	$foreach $field_ind : $field_indices:
+		#out_view.$eval($out_members[$i].nameof) = #soa.$eval($soa_members[$field_ind].nameof).array_view();
+		$i++;
+	$endforeach
 }
 
 macro bool @contains(#soa, #val)

@@ -72,6 +72,11 @@ macro @remove_first(#soa)
 	@op(#soa, "remove_first", true)!;
 }
 
+macro @resize(#soa, #size)
+{
+	@op_val(#soa, "resize", #size);
+}
+
 macro @set_size(#soa, #size)
 {
 	@op_val(#soa, "set_size", #size);

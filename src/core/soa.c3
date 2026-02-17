@@ -269,8 +269,8 @@ macro usz @push_all_to_limit(#soa, #vals)
 		var $Type = $val_mem.typeid;
 
 		{
-			$Type[] temp_arr = mem::alloc_array($Type, #vals.len);
-			defer mem::free(temp_arr.ptr);
+			$Type[] temp_arr = allocator::alloc_array(tmem, $Type, #vals.len);
+			defer allocator::free(tmem, temp_arr.ptr);
 
 			for (uint i = 0; i < #vals.len; ++i) {
 				temp_arr[i] = #vals[i].$eval($val_mem.nameof);
@@ -497,8 +497,8 @@ macro @op_val(#soa, String $op, #val, bool $is_opt = false)
 				var $Type = $val_mem.typeid;
 
 				{
-					$Type[] temp_arr = mem::alloc_array($Type, #val.len);
-					defer mem::free(temp_arr.ptr);
+					$Type[] temp_arr = allocator::alloc_array(tmem, $Type, #val.len);
+					defer allocator::free(tmem, temp_arr.ptr);
 
 					for (uint i = 0; i < #val.len; ++i) {
 						temp_arr[i] = #val[i].$eval($val_mem.nameof);

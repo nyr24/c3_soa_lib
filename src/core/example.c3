@@ -41,7 +41,8 @@ fn void Value.print(&self) {
 	io::printfn("i: %d, f: %.2f, s: %s", self.int_val, self.f_val, self.str_val);
 }
 
-fn int main() {
+fn void main_test() @test
+{
 	/* First example */
 
 	const MEM_LEN = 3;
@@ -63,6 +64,8 @@ fn int main() {
 
 		usz len = soa::@size(my_soa);
 		usz cap = soa::@cap(my_soa);
+		assert(len == soa_val_slice.len);
+		assert(cap == 10);
 		// io::printfn("Stack-allocated SOA: len: %d, cap: %d", len, cap);
 
 		MySoaViewHorizontal soa_view;
@@ -112,7 +115,11 @@ fn int main() {
 		}
 		soa::@pop(my_soa)!!;
 		soa::@clear(my_soa);
+		assert(soa::@len(my_soa) == 0);
+
 		soa::@set_size(my_soa, 8);
+		assert(soa::@len(my_soa) == 8);
+
 		// NOTE: comment out if have fill defined on std::collections::elastic_array
 		// soa::@fill(my_soa, soa_val);
 		soa::@push(my_soa, soa_val);
@@ -152,6 +159,8 @@ fn int main() {
 		soa::@pop(my_soa)!!;
 		soa::@clear(my_soa);
 		soa::@set_size(my_soa, 8);
+		assert(soa::@len(my_soa) == 8);
+
 		// NOTE: comment out if have fill defined on std::collections::list
 		// soa::@fill(my_soa, soa_val);
 		soa::@push(my_soa, soa_val);
@@ -165,6 +174,4 @@ fn int main() {
 		// soa::@print(my_soa);
 		// io::printfn("get_val is: %d, %.2f, %s", get_val.int_val, get_val.f_val, get_val.str_val); // output: get_val: 228, 1337.00, world 
 	}
-
-	return 0;
 }

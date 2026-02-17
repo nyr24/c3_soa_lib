@@ -5,15 +5,15 @@
   "authors": [ "nyr24" ],
   "version": "0.9.5",
   "sources": [ "src/**" ],
-  "test-sources": [ "test/**" ],
+  "test-sources": [ "src/**" ],
   "build-dir": "build",
   "output": "build",
   "targets": {
     "soa": {
       "type": "static-lib",
     },
-    "soa_exe": {
-      "type": "executable",
+    "soa_dyn": {
+      "type": "dynamic-lib",
     },
   },
   "cpu": "generic",

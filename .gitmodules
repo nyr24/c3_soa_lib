@@ -1,7 +1,3 @@
-[submodule "utils"]
-	path = src/utils
-	url = git@github.com:nyr24/c3_utils.git
-	branch = main
 [submodule "src/utils"]
 	path = src/utils
 	url = git@github.com:nyr24/c3_utils.git

@@ -3,9 +3,9 @@
   "warnings": [ "no-unused" ],
   "dependencies": [],
   "authors": [ "nyr24" ],
-  "version": "0.9.5",
+  "version": "0.9.6",
   "sources": [ "src/**" ],
-  "test-sources": [ "src/**" ],
+  "test-sources": [ "test/**" ],
   "build-dir": "build",
   "output": "build",
   "targets": {

@@ -94,7 +94,7 @@ macro @reverse(#soa)
 
 macro @len(#soa)
 {
-	var $SoaType = $typeof(#soa);
+	var $SoaType = $Typeof(#soa);
 	var $soa_mem = $SoaType::members[0];
 	$if $soa_mem.type.kind == SLICE:
 		return #soa.$eval($soa_mem.name).len;
@@ -106,9 +106,9 @@ macro @len(#soa)
 macro @size(#soa)
 	=> @len(#soa);
 
-macro usz @capacity(#soa)
+macro sz @capacity(#soa)
 {
-	var $SoaType = $typeof(#soa);
+	var $SoaType = $Typeof(#soa);
 	var $soa_mem = $SoaType::members[0];
 
 	$switch:
@@ -123,12 +123,12 @@ macro usz @capacity(#soa)
 	$endswitch;
 }
 
-macro usz @cap(#soa)
+macro sz @cap(#soa)
 	=> @capacity(#soa);
 
-macro @init(#soa, #alloc, uint #cap = 16u)
+macro @init(#soa, #alloc, sz #cap = 16u)
 {
-	var $SoaType = $typeof(#soa);
+	var $SoaType = $Typeof(#soa);
 	var $soa_members = $SoaType::members;
 	
 	$foreach $m : $soa_members:
@@ -136,19 +136,19 @@ macro @init(#soa, #alloc, uint #cap = 16u)
 	$endforeach
 }
 
-macro @tinit(#soa, uint #cap = 16u)
+macro @tinit(#soa, sz #cap = 16u)
 {
 	@op_val(#soa, "tinit", #cap);
 }
 
-macro @reserve(#soa, uint #cap)
+macro @reserve(#soa, sz #cap)
 {
 	@op_val(#soa, "reserve", #cap);
 }
 
 macro @print(#soa)
 {
-	var $SoaType = $typeof(#soa);
+	var $SoaType = $Typeof(#soa);
 	var $soa_members = $SoaType::members;
 	
 	$foreach $m : $soa_members:
@@ -156,9 +156,9 @@ macro @print(#soa)
 	$endforeach
 }
 
-macro @swap(#soa, usz #first, usz #second)
+macro @swap(#soa, sz #first, sz #second)
 {
-	var $SoaType = $typeof(#soa);
+	var $SoaType = $Typeof(#soa);
 	var $soa_members = $SoaType::members;
 	
 	$foreach $m : $soa_members:
@@ -176,7 +176,7 @@ macro @last(#soa, #out)
 	@at(#soa, "last", 0, #out)!;
 }
 
-macro @get(#soa, uint #ind, #out)
+macro @get(#soa, sz #ind, #out)
 {
 	@at(#soa, "get", #ind, #out);
 }
@@ -185,10 +185,10 @@ macro @get(#soa, uint #ind, #out)
  @require $op == "first" || $op == "last" || $op == "get"
  @require #out != null
 *>
-macro @at(#soa, String $op, uint #ind, #out) @private
+macro @at(#soa, String $op, sz #ind, #out) @private
 {
-	var $SoaType = $typeof(#soa);
-	var $OutType = $typeof(#out);
+	var $SoaType = $Typeof(#soa);
+	var $OutType = $Typeof(#out);
 
 	var $soa_members = $SoaType::members;
 	var $out_members = $OutType::inner.members;
@@ -208,12 +208,12 @@ macro @at(#soa, String $op, uint #ind, #out) @private
 	$endfor
 }
 
-macro usz? @index_of(#soa, #val)
+macro sz? @index_of(#soa, #val)
 {
 	return @index_of_inner(#soa, "index_of", #val);
 }
 
-macro usz? @rindex_of(#soa, #val)
+macro sz? @rindex_of(#soa, #val)
 {
 	return @index_of_inner(#soa, "rindex_of", #val);
 }
@@ -221,15 +221,15 @@ macro usz? @rindex_of(#soa, #val)
 <*
  @require $op == "index_of" || $op =="rindex_of"
 *>
-macro usz? @index_of_inner(#soa, String $op, #val) @private
+macro sz? @index_of_inner(#soa, String $op, #val) @private
 {
-	var $SoaType = $typeof(#soa);
-	var $ValType = $typeof(#val);
+	var $SoaType = $Typeof(#soa);
+	var $ValType = $Typeof(#val);
 
 	var $soa_members = $SoaType::members;
 	var $val_members = $ValType::members;
 
-	usz[$soa_members.len] indices;
+	sz[$soa_members.len] indices;
 	
 	$for var $i = 0; $i < $soa_members.len; ++$i:
 		var $soa_mem = $soa_members[$i];
@@ -237,7 +237,7 @@ macro usz? @index_of_inner(#soa, String $op, #val) @private
 		indices[$i] = #soa.$eval($soa_mem.name).$eval($op)(#val.$eval($val_mem.name))!;
 	$endfor
 
-	for (uint j = 1; j < $soa_members.len; ++j) {
+	for (sz j = 1; j < $soa_members.len; ++j) {
 		if (indices[0] != indices[j]) {
 			return NOT_FOUND~;
 		}
@@ -249,14 +249,14 @@ macro usz? @index_of_inner(#soa, String $op, #val) @private
 	Add as many values from this array as possible, returning the
 	number of elements that didn't fit.
 *>
-macro usz @push_all_to_limit(#soa, #vals)
+macro sz @push_all_to_limit(#soa, #vals)
 {
-	var $SoaType = $typeof(#soa);
-	var $ValType = $typeof(#vals);
+	var $SoaType = $Typeof(#soa);
+	var $ValType = $Typeof(#vals);
 
 	var $soa_members = $SoaType::members;
 	var $val_members = $ValType::inner.members;
-	usz didnt_fit_cnt;
+	sz didnt_fit_cnt;
 
 	$for var $i = 0; $i < $soa_members.len; $i++:
 		var $soa_mem = $soa_members[$i];
@@ -267,7 +267,7 @@ macro usz @push_all_to_limit(#soa, #vals)
 			$Type[] temp_arr = alloc::alloc_array(tmem, $Type, #vals.len);
 			defer alloc::free(tmem, temp_arr.ptr);
 
-			for (uint i = 0; i < #vals.len; ++i) {
+			for (sz i = 0; i < #vals.len; ++i) {
 				temp_arr[i] = #vals[i].$eval($val_mem.name);
 			}
 
@@ -279,8 +279,8 @@ macro usz @push_all_to_limit(#soa, #vals)
 
 macro @soa_view(#soa, #out_view)
 {
-	var $SoaType = $typeof(#soa);
-	var $OutType = $typeof(#out_view);
+	var $SoaType = $Typeof(#soa);
+	var $OutType = $Typeof(#out_view);
 	var $soa_members = $SoaType::members;
 	var $out_members = $OutType::members;
 
@@ -296,10 +296,10 @@ macro @soa_view(#soa, #out_view)
  @require #end_ind > 0
  @require #start_ind < #end_ind
 *>
-macro @soa_view_partial_hor(#soa, #out_view, usz #start_ind, usz #end_ind)
+macro @soa_view_partial_hor(#soa, #out_view, sz #start_ind, sz #end_ind)
 {
-	var $SoaType = $typeof(#soa);
-	var $OutType = $typeof(#out_view);
+	var $SoaType = $Typeof(#soa);
+	var $OutType = $Typeof(#out_view);
 	var $soa_members = $SoaType::members;
 	var $out_members = $OutType::members;
 
@@ -313,10 +313,10 @@ macro @soa_view_partial_hor(#soa, #out_view, usz #start_ind, usz #end_ind)
 
 // vertical partial view:
 // creates views (slices) only for specified indices of fields in #field_indices
-macro @soa_view_partial_vert(#soa, #out_view, usz[] $field_indices)
+macro @soa_view_partial_vert(#soa, #out_view, sz[] $field_indices)
 {
-	var $SoaType = $typeof(#soa);
-	var $OutType = $typeof(#out_view);
+	var $SoaType = $Typeof(#soa);
+	var $OutType = $Typeof(#out_view);
 	var $soa_members = $SoaType::members;
 	var $out_members = $OutType::members;
 
@@ -329,8 +329,8 @@ macro @soa_view_partial_vert(#soa, #out_view, usz[] $field_indices)
 
 macro bool @contains(#soa, #val)
 {
-	var $SoaType = $typeof(#soa);
-	var $ValType = $typeof(#val);
+	var $SoaType = $Typeof(#soa);
+	var $ValType = $Typeof(#val);
 
 	var $soa_members = $SoaType::members;
 	var $val_members = $ValType::members;
@@ -349,14 +349,14 @@ macro bool @contains(#soa, #val)
 <*
  @return "the number of deleted elements."
 *>
-macro usz @remove_item(#soa, #val)
+macro sz @remove_item(#soa, #val)
 {
-	var $SoaType = $typeof(#soa);
-	var $ValType = $typeof(#val);
+	var $SoaType = $Typeof(#soa);
+	var $ValType = $Typeof(#val);
 
 	var $soa_members = $SoaType::members;
 	var $val_members = $ValType::members;
-	usz[$val_members.len] remove_res;
+	sz[$val_members.len] remove_res;
 	
 	$for var $i = 0; $i < $soa_members.len; ++$i:
 		var $soa_mem = $soa_members[$i];
@@ -381,8 +381,8 @@ macro bool @remove_first_item(#soa, #val)
 *>
 macro bool @remove_item_inner(#soa, String $op, #val) @private
 {
-	var $SoaType = $typeof(#soa);
-	var $ValType = $typeof(#val);
+	var $SoaType = $Typeof(#soa);
+	var $ValType = $Typeof(#val);
 
 	var $soa_members = $SoaType::members;
 	var $val_members = $ValType::members;
@@ -394,7 +394,7 @@ macro bool @remove_item_inner(#soa, String $op, #val) @private
 		remove_res[$i] = #soa.$eval($soa_mem.name).$eval($op)(#val.$eval($val_mem.name));
 	$endfor
 
-	for (uint i = 0; i < $val_members.len; ++i) {
+	for (sz i = 0; i < $val_members.len; ++i) {
 		if (!remove_res[i]) {
 			return false;
 		}
@@ -422,11 +422,11 @@ macro @compact(#soa, #out_res)
 
 <*
  @require $op == "compact" || $op == "compact_count"
- @require $typeof(#out_res).type.kind == SLICE
+ @require $Typeof(#out_res).type.kind == SLICE
 *>
 macro void @compact_inner(#soa, String $op, #out_res) @private
 {
-	var $SoaType = $typeof(#soa);
+	var $SoaType = $Typeof(#soa);
 	var $soa_members = $SoaType::members;
 	
 	$for var $i = 0; $i < $soa_members.len; ++$i:
@@ -440,14 +440,14 @@ macro void @compact_inner(#soa, String $op, #out_res) @private
 }
 
 <*
- @require $typeof(#soa) == $typeof(#with)
- @require $typeof(#out_res)::kind == SLICE
- @require $reflect(#out_res).type.inner.kind == BOOL
+ @require $Typeof(#soa) == $Typeof(#with)
+ @require $Typeof(#out_res)::kind == SLICE
+ @require $Typeof(#out_res)::inner.kind == BOOL
 *>
 macro void @equals(#soa, #with, #out_res)
 {
-	var $SoaType = $typeof(#soa);
-	var $WithType = $typeof(#with);
+	var $SoaType = $Typeof(#soa);
+	var $WithType = $Typeof(#with);
 	var $soa_members = $SoaType::members;
 	var $with_members = $WithType::members;
 	
@@ -460,7 +460,7 @@ macro void @equals(#soa, #with, #out_res)
 
 macro void @resize(#soa, sz #val)
 {
-	var $SoaType = $typeof(#soa);
+	var $SoaType = $Typeof(#soa);
 	var $soa_members = $SoaType::members;
 	
 	$foreach $mem : $soa_members:
@@ -475,7 +475,7 @@ macro void @set_size(#soa, sz #val) => @resize(#soa, #val);
 // e.g. clear(), reverse()
 macro @op(#soa, String $op, bool $is_opt = false)
 {
-	var $SoaType = $typeof(#soa);
+	var $SoaType = $Typeof(#soa);
 	var $soa_members = $SoaType::members;
 	
 	$foreach $soa_mem : $soa_members:
@@ -490,8 +490,8 @@ macro @op(#soa, String $op, bool $is_opt = false)
 // e.g. push(), push_front(), set_size(), resize(), remove_at()
 macro @op_val(#soa, String $op, #val, bool $is_opt = false)
 {
-	var $SoaType = $typeof(#soa);
-	var $ValType = $typeof(#val);
+	var $SoaType = $Typeof(#soa);
+	var $ValType = $Typeof(#val);
 
 	$switch:
 		$case $ValType::kind == SLICE:
@@ -507,7 +507,7 @@ macro @op_val(#soa, String $op, #val, bool $is_opt = false)
 					$Type[] temp_arr = alloc::alloc_array(tmem, $Type, #val.len);
 					defer alloc::free(tmem, temp_arr.ptr);
 
-					for (uint i = 0; i < #val.len; ++i) {
+					for (sz i = 0; i < #val.len; ++i) {
 						temp_arr[i] = #val[i].$eval($val_mem.name);
 					}
 
@@ -548,8 +548,8 @@ macro @op_val(#soa, String $op, #val, bool $is_opt = false)
 // e.g. insert_at(), set_at(), insert_at_try()
 macro @op_index_val(#soa, String $op, #index, #val, bool $is_opt = false)
 {
-	var $SoaType = $typeof(#soa);
-	var $ValType = $typeof(#val);
+	var $SoaType = $Typeof(#soa);
+	var $ValType = $Typeof(#val);
 
 	var $soa_members = $SoaType::members;
 	var $val_members = $ValType::members;

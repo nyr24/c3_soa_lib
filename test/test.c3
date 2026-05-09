@@ -1,13 +1,13 @@
 import std::io;
-import std::collections::elastic_array;
+import std::collections::fixedlist;
 import std::collections::list;
 import soa;
 
 struct MySoa <CAP>
 {
-	ElasticArray{int, CAP}    ints;
-	ElasticArray{float, CAP}  floats;
-	ElasticArray{String, CAP} strs;
+	FixedList{int, CAP}    ints;
+	FixedList{float, CAP}  floats;
+	FixedList{String, CAP} strs;
 }
 
 struct MyDynSoa
@@ -62,8 +62,8 @@ fn void main_test() @test
 
 		soa::@push_all(my_soa, soa_val_slice);
 
-		usz len = soa::@size(my_soa);
-		usz cap = soa::@cap(my_soa);
+		sz len = soa::@size(my_soa);
+		sz cap = soa::@cap(my_soa);
 		assert(len == soa_val_slice.len);
 		assert(cap == 10);
 		// io::printfn("Stack-allocated SOA: len: %d, cap: %d", len, cap);
@@ -71,7 +71,7 @@ fn void main_test() @test
 		MySoaViewHorizontal soa_view;
 		soa::@soa_view(my_soa, soa_view);
 
-		usz view_len = soa::@len(soa_view);
+		sz view_len = soa::@len(soa_view);
 		// io::printfn("View SOA: len: %d", view_len);
 
 		MySoaViewHorizontal soa_view_partial_hor;
@@ -84,7 +84,7 @@ fn void main_test() @test
 		// soa::@print(soa_view_partial_hor);
 		// soa::@print(soa_view_partial_vert);
 		
-		usz not_entered_cnt = soa::@push_all_to_limit(my_soa2, soa_val_slice);
+		sz not_entered_cnt = soa::@push_all_to_limit(my_soa2, soa_val_slice);
 		// io::printfn("not entered count: %d", not_entered_cnt);
 
 		bool[MEM_LEN] eq_res;
@@ -110,7 +110,7 @@ fn void main_test() @test
 
 		soa::@set_size(my_soa, 10);
 	
-		for (uint i = 0; i < 3; ++i) {
+		for (sz i = 0; i < 3; ++i) {
 			soa::@insert_at(my_soa, i, soa_val);
 		}
 		soa::@pop(my_soa)!!;
@@ -148,12 +148,12 @@ fn void main_test() @test
 
 		soa::@set_size(my_soa, 28);
 	
-		for (uint i = 0; i < 3; ++i) {
+		for (sz i = 0; i < 3; ++i) {
 			soa::@insert_at(my_soa, i, soa_val);
 		}
 
-		usz len = soa::@len(my_soa);
-		usz cap = soa::@cap(my_soa);
+		sz len = soa::@len(my_soa);
+		sz cap = soa::@cap(my_soa);
 		// io::printfn("Heap-allocated SOA: len: %d, cap: %d", len, cap);
 
 		soa::@pop(my_soa)!!;

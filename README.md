@@ -1,7 +1,7 @@
 ## Simple library for operating on SOA (Structure Of Arrays) in C3 programming language
 - This library provides an interface for easier interaction with SOA data structures in your code, so it feels like you are interacting with AOS (Array Of Structures).
-- Uses the same naming conventions as in std containers (ElasticArray or List).
-- Creating the SOA types is your responsibility, it gives you more control over choosing a specific array container (maybe you would want to use either List (heap allocated) or ElasticArray (stack allocated) or maybe even your own custom Array implementation (in this case, if naming of your methods will differentiate with std containers you maybe will need to add some macros on top of existing ones).
+- Uses the same naming conventions as in std containers (FixedList or List).
+- Creating the SOA types is your responsibility, it gives you more control over choosing a specific array container (maybe you would want to use either List (heap allocated) or FixedList (stack allocated) or maybe even your own custom Array implementation (in this case, if naming of your methods will differentiate with std containers you maybe will need to add some macros on top of existing ones).
 
 ## Why?
 - Structure of Arrays (SOA) should be used instead Array of Structures (AOS) for performance, especially in simulations or game engines, because SOA provides better CPU cache utilization and allows for efficient Single Instruction, Multiple Data (SIMD) vectorization by keeping related data types (like all x coordinates) contiguous in memory, leading to fewer cache misses and faster processing of large datasets, while AOS is simpler for object-oriented code but inefficient for field-specific operations 
@@ -14,15 +14,15 @@
 ## Code Example:
 ```cpp
 import std::io;
-import std::collections::elastic_array;
+import std::collections::fixedlist;
 import std::collections::list;
 import soa;
 
 struct MySoa <CAP>
 {
-	ElasticArray{int, CAP}    ints;
-	ElasticArray{float, CAP}  floats;
-	ElasticArray{String, CAP} strs;
+	FixedList{int, CAP}    ints;
+	FixedList{float, CAP}  floats;
+	FixedList{String, CAP} strs;
 }
 
 struct MyDynSoa
@@ -118,7 +118,7 @@ fn int main() {
 		soa::@pop(my_soa)!!;
 		soa::@clear(my_soa);
 		soa::@set_size(my_soa, 8);
-		// NOTE: comment out if have fill defined on std::collections::elastic_array
+		// NOTE: comment out if have fill defined on std::collections::fixedlist
 		// soa::@fill(my_soa, soa_val);
 		soa::@push(my_soa, soa_val);
 		soa::@reverse(my_soa);

@@ -120,7 +120,7 @@ fn void main_test() @test
 		soa::@set_size(my_soa, 8);
 		assert(soa::@len(my_soa) == 8);
 
-		// NOTE: comment out if have fill defined on std::collections::elastic_array
+		// NOTE: comment out if have fill defined on std::collections::fixedlist
 		// soa::@fill(my_soa, soa_val);
 		soa::@push(my_soa, soa_val);
 		soa::@reverse(my_soa);
